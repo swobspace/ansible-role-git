@@ -1,0 +1,18 @@
+---
+- name: test git project directory
+  ansible.builtin.stat:
+    path: "{{ git_project_dir }}"
+  register: gitprojectdirstat
+
+- name: fail if directory does not exist
+  ansible.builtin.fail:
+    msg: "Git project directory does not exist. Please check!"
+  when: gitprojectdirstat.stat.exists == false or gitprojectdirstat.stat.isdir == false
+
+- name: Checkout and update specified git repos
+  ansible.builtin.git:
+    repo: "{{ item.url }}"
+    dest: "{{ git_project_dir }}/{{ item.dir | default(item.url | basename | replace('.git', '') ) }}"
+    clone: yes
+    update: yes
+  loop: "{{ git_project_list }}"
