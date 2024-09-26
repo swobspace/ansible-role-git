@@ -15,4 +15,5 @@
     dest: "{{ git_project_dir }}/{{ item.dir | default(item.url | basename | replace('.git', '') ) }}"
     clone: yes
     update: yes
+    track_submodules: yes
   loop: "{{ git_project_list }}"
