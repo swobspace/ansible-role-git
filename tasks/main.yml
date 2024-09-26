@@ -13,7 +13,7 @@
   ansible.builtin.git:
     repo: "{{ item.url }}"
     dest: "{{ git_project_dir }}/{{ item.dir | default(item.url | basename | replace('.git', '') ) }}"
-    clone: yes
-    update: yes
-    track_submodules: yes
+    clone: true
+    update: true
+    track_submodules: "{{ item.track_submodules | default(false) }}"
   loop: "{{ git_project_list }}"
